@@ -58,7 +58,7 @@ module Pay
           # Remove payment methods since customer cannot be reused after cancelling
           Pay::PaymentMethod.where(customer_id: object.customer_id).destroy_all
         when "trialing"
-          attributes[:trial_ends_at] = Time.parse(object.next_billed_at) if object.next_billed_at
+          attributes[:trial_ends_at] = Time.parse(object.next_billed_at) if object.next_billed_at != nil
         when "paused"
           attributes[:pause_starts_at] = Time.parse(object.paused_at) if object.paused_at
         when "active", "past_due"
