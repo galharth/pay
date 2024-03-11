@@ -34,10 +34,12 @@ module Pay
         pay_customer = Pay::Customer.find_by(processor: :paddle_billing, processor_id: object.customer_id)
         return unless pay_customer
 
+        puts object
+        
         attributes = {
           current_period_end: object.current_billing_period&.ends_at,
           current_period_start: object.current_billing_period&.starts_at,
-          ends_at: (object.canceled_at ? Time.parse(object.canceled_at) : nil),
+          ends_at: (object.canceled_at != nil ? Time.parse(object.canceled_at) : nil),
           metadata: object.custom_data,
           paddle_cancel_url: object.management_urls&.cancel,
           paddle_update_url: object.management_urls&.update_payment_method,
